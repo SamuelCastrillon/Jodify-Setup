@@ -91,8 +91,8 @@ o.equalalways = false      -- Don't equalize window sizes
 -- Wild Menu
 -- ============================================
 
-o.wildmode = { "longest:full", "menu:first" }
-o.wildmenu = true           -- Enable wild menu
+o.wildmode = "longest:full"     -- Longest match first, then menu
+o.wildmenu = true               -- Enable wild menu
 o.wildignore:append({
   "*.o",
   "*.obj",
