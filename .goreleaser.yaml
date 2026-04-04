@@ -39,6 +39,7 @@ archives:
   - id: config
     format: zip
     name_template: "jodify-config-{{.Version}}"
+    meta: true
     files:
       - src: config/
         dst: config/
