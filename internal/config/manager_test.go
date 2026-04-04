@@ -76,12 +76,25 @@ func TestDownloadAllFail(t *testing.T) {
 
 // TestGetLatestReleaseURL tests getting release URL
 func TestGetLatestReleaseURL(t *testing.T) {
-	mgr := NewManager()
+	// Save original version
+	origVersion := version.Version
+	defer func() { version.Version = origVersion }()
 
+	// Test dev mode (v0.0.0)
+	version.Version = "v0.0.0"
+	mgr := NewManager()
 	url := mgr.GetLatestReleaseURL()
-	// In dev mode (version=v0.0.0), should return latest release URL
-	if url != "https://github.com/SamuelCastrillon/Jodify-Setup/releases/latest/download/jodify-config.zip" {
-		t.Errorf("GetLatestReleaseURL() = %v, want latest release URL", url)
+	expected := "https://github.com/SamuelCastrillon/Jodify-Setup/releases/latest/download/jodify-config.zip"
+	if url != expected {
+		t.Errorf("GetLatestReleaseURL() dev mode = %v\nwant %v", url, expected)
+	}
+
+	// Test release mode
+	version.Version = "v0.1.0"
+	url = mgr.GetLatestReleaseURL()
+	expected = "https://github.com/SamuelCastrillon/Jodify-Setup/releases/download/v0.1.0/jodify-config-0.1.0.zip"
+	if url != expected {
+		t.Errorf("GetLatestReleaseURL() release mode = %v\nwant %v", url, expected)
 	}
 }
 

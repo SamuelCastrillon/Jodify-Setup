@@ -1,0 +1,28 @@
+# Binarios compilados
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go test binaries
+*.test
+*.out
+
+# GoReleaser
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+jodify-config-test.zip
+jodify-setup-test.exe
+serve_local.exe
+serve_local.go

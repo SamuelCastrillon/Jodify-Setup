@@ -3,8 +3,11 @@ package version
 import "fmt"
 
 // Version is the current version of jodify-setup
-// Set via ldflags at build time (e.g., -X github.com/SamuelCastrillon/Jodify-Setup/pkg/version.Version=v1.0.0)
-var Version = "v0.0.0"
+// Change this in ONE place and it propagates everywhere:
+//   - CLI output (version command)
+//   - Config download URL (config/manager.go)
+//   - GoReleaser ldflags (overwrites this at build time for releases)
+var Version = "v0.1.1"
 
 // Commit is the git commit hash
 // Set via ldflags at build time (e.g., -X github.com/SamuelCastrillon/Jodify-Setup/pkg/version.Commit=$(git rev-parse --short HEAD))

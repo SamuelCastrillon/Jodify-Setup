@@ -69,45 +69,55 @@ func (m *manager) Download(ctx context.Context, url string) (string, error) {
 		}
 		tmpPath := tmpFile.Name()
 		tmpFile.Close()
-		defer os.Remove(tmpPath)
 
 		// Download with timeout
 		downloadCtx, cancel := context.WithTimeout(ctx, DefaultTimeout)
-		defer cancel()
 
 		req, err := http.NewRequestWithContext(downloadCtx, http.MethodGet, url, nil)
 		if err != nil {
+			cancel()
+			os.Remove(tmpPath) // Clean up on error
 			lastErr = fmt.Errorf("failed to create request: %w", err)
 			continue
 		}
 
 		resp, err := m.httpClient.Do(req)
 		if err != nil {
+			cancel()
+			os.Remove(tmpPath) // Clean up on error
 			lastErr = fmt.Errorf("download failed: %w", err)
 			time.Sleep(time.Second * time.Duration(attempt))
 			continue
 		}
-		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
+			resp.Body.Close()
+			cancel()
+			os.Remove(tmpPath) // Clean up on error
 			lastErr = fmt.Errorf("download failed with status: %d", resp.StatusCode)
 			time.Sleep(time.Second * time.Duration(attempt))
 			continue
 		}
 
 		// Copy response body to file
-		file, err := os.OpenFile(tmpPath, os.O_WRONLY|os.O_TRUNC, 0644)
+		file, err := os.OpenFile(tmpPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
+			resp.Body.Close()
+			cancel()
 			return "", fmt.Errorf("failed to open temp file: %w", err)
 		}
 
 		_, err = io.Copy(file, resp.Body)
 		file.Close()
+		resp.Body.Close()
+		cancel()
 		if err != nil {
+			os.Remove(tmpPath) // Clean up on error
 			lastErr = fmt.Errorf("failed to write to temp file: %w", err)
 			continue
 		}
 
+		// Success - caller is responsible for cleanup after extraction
 		return tmpPath, nil
 	}
 
