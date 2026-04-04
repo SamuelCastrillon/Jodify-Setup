@@ -1,0 +1,78 @@
+# This file is used by GoReleaser to build and release the project.
+# Learn more about GoReleaser at https://goreleaser.com
+
+project_name: jodify-setup
+
+# Build configuration
+builds:
+  - id: jodify-setup
+    binary: jodify-setup
+    main: ./cmd/jodify-setup
+    
+    # Build targets
+    goos:
+      - windows
+      - darwin
+    
+    goarch:
+      - amd64
+      - arm64
+    
+    # Build flags
+    ldflags:
+      - -s -w
+      - -X github.com/jodify/jodify-setup/pkg/version.Version={{.Version}}
+      - -X github.com/jodify/jodify-setup/pkg/version.Commit={{.Commit}}
+      - -X github.com/jodify/jodify-setup/pkg/version.Date={{.Date}}
+    
+    # Windows-specific settings
+    windows:
+      - name: jodify-setup
+        product_name: Jodify Setup
+        file_version: "{{.Version}}"
+        product_version: "{{.Version}}"
+    
+    # Darwin-specific settings (macOS)
+    darwin:
+      - name: jodify-setup
+        product_name: Jodify Setup
+        file_version: "{{.Version}}"
+        product_version: "{{.Version}}"
+
+# Archive configuration
+archives:
+  - id: default
+    format: zip
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - from: config/
+        to: config/
+
+# Release configuration
+release:
+  github:
+    owner: jodify
+    name: jodify-setup
+  draft: false
+  prerelease: auto
+  name: "Jodify Setup {{.Tag}}"
+
+# Changelog configuration
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+# Snapshot configuration
+snapshot:
+  name_template: "{{ .Tag }}-snap"
+
+# Partial versioning
+# This allows GoReleaser to work with only partial information during snapshot builds
+env:
+  - GOFLAGS=-tags=
