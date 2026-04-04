@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -54,6 +55,7 @@ func NewManager() Manager {
 // Download fetches the config zip from the given URL with retry logic
 func (m *manager) Download(ctx context.Context, url string) (string, error) {
 	var lastErr error
+	log.Printf("[DEBUG] Download called with URL: %s", url)
 
 	for attempt := 1; attempt <= MaxRetries; attempt++ {
 		select {
@@ -80,6 +82,9 @@ func (m *manager) Download(ctx context.Context, url string) (string, error) {
 			lastErr = fmt.Errorf("failed to create request: %w", err)
 			continue
 		}
+
+		// GitHub requires User-Agent header for release downloads
+		req.Header.Set("User-Agent", "jodify-setup")
 
 		resp, err := m.httpClient.Do(req)
 		if err != nil {
@@ -195,9 +200,12 @@ func (m *manager) GetLatestReleaseURL() string {
 	// GoReleaser generates: jodify-config-0.1.0.zip (no 'v' prefix)
 	// URL format: https://github.com/.../releases/download/v0.1.0/jodify-config-0.1.0.zip
 	ver := strings.TrimPrefix(version.Version, "v")
+	log.Printf("[DEBUG] version.Version=%q, ver=%q", version.Version, ver)
 	if ver == "" || ver == "0.0.0" {
 		// Development mode: use latest release
 		return "https://github.com/SamuelCastrillon/Jodify-Setup/releases/latest/download/jodify-config.zip"
 	}
-	return fmt.Sprintf("https://github.com/SamuelCastrillon/Jodify-Setup/releases/download/v%s/jodify-config-%s.zip", ver, ver)
+	url := fmt.Sprintf("https://github.com/SamuelCastrillon/Jodify-Setup/releases/download/v%s/jodify-config-%s.zip", ver, ver)
+	log.Printf("[DEBUG] config URL: %s", url)
+	return url
 }

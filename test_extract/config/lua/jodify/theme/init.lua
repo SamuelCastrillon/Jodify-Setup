@@ -1,14 +1,8 @@
 -- Jodify Neovim Configuration
 -- Theme configuration with Jodify color palette
 
--- Check if tokyonight is available (installed by lazy.nvim)
-local tokyonight_ok, tokyonight = pcall(require, "tokyonight")
-if not tokyonight_ok then
-  return
-end
-
 -- TokyoNight theme with Jodify purple accents
-tokyonight.setup({
+require("tokyonight").setup({
   style = "night",           -- Dark style
   light_style = "day",       -- Light style for light mode
   transparent = false,       -- Not transparent

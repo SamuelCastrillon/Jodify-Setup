@@ -7,47 +7,37 @@
 require("jodify.core.options")
 
 -- ============================================
--- Theme (must be before plugins)
--- ============================================
-require("jodify.theme")
-
--- ============================================
--- Plugin Manager & Plugins
+-- Plugin Manager (must load first to install plugins)
 -- ============================================
 require("jodify.lazy")
 
--- Load plugin configs
-require("jodify.plugins.navigation")
-require("jodify.plugins.lsp")
-require("jodify.plugins.git_terminal")
-require("jodify.plugins.alpha")
-
 -- ============================================
--- Keymaps
+-- Automatically sync and load plugins
 -- ============================================
-require("jodify.keymaps")
-
--- ============================================
--- Welcome message
--- ============================================
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    vim.defer_fn(function()
-      vim.print("Welcome to Jodify Neovim Configuration!")
-    end, 100)
-  end,
-})
-
--- ============================================
--- Final setup
--- ============================================
-
--- Report plugin load time
 vim.api.nvim_create_autocmd("VeryLazy", {
   callback = function()
-    local lazy_ok, lazy = pcall(require, "lazy")
-    if lazy_ok then
-      local stats = lazy.stats()
+    -- Sync missing plugins
+    require("lazy").sync({ show = false })
+
+    -- Small delay to ensure plugins are loaded
+    vim.defer_fn(function()
+      -- Theme (after plugins are installed)
+      require("jodify.theme")
+
+      -- Load plugin configs
+      require("jodify.plugins.navigation")
+      require("jodify.plugins.lsp")
+      require("jodify.plugins.git_terminal")
+      require("jodify.plugins.alpha")
+
+      -- Keymaps
+      require("jodify.keymaps")
+
+      -- Welcome message
+      vim.print("Welcome to Jodify Neovim Configuration!")
+
+      -- Report plugin load time
+      local stats = require("lazy").stats()
       vim.schedule(function()
         vim.print(string.format(
           "Jodify loaded %d plugins in %.2fms",
@@ -55,6 +45,6 @@ vim.api.nvim_create_autocmd("VeryLazy", {
           stats.startuptime
         ))
       end)
-    end
+    end, 100)
   end,
 })
