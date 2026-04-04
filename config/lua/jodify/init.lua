@@ -15,7 +15,7 @@ require("jodify.lazy")
 -- Automatically sync and load plugins
 -- ============================================
 vim.api.nvim_create_autocmd("User", {
-  event = "LazySync",
+  pattern = "LazySync",
   callback = function()
     -- Theme (after plugins are installed)
     require("jodify.theme")
