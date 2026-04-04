@@ -77,8 +77,9 @@ func TestGetLatestReleaseURL(t *testing.T) {
 	mgr := NewManager()
 
 	url := mgr.GetLatestReleaseURL()
-	if url != DefaultReleaseURL {
-		t.Errorf("GetLatestReleaseURL() = %v, want %v", url, DefaultReleaseURL)
+	// In dev mode (version=v0.0.0), should return latest release URL
+	if url != "https://github.com/SamuelCastrillon/Jodify-Setup/releases/latest/download/jodify-config.zip" {
+		t.Errorf("GetLatestReleaseURL() = %v, want latest release URL", url)
 	}
 }
 

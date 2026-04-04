@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/SamuelCastrillon/Jodify-Setup/pkg/version"
 )
 
 const (
@@ -17,8 +19,6 @@ const (
 	DefaultTimeout = 30 * time.Second
 	// MaxRetries is the maximum number of retries for download
 	MaxRetries = 3
-	// DefaultReleaseURL is the default config release URL
-	DefaultReleaseURL = "https://github.com/jodify/jodify-config/releases/latest/download/jodify-config.zip"
 )
 
 // Manager handles configuration download and extraction
@@ -179,7 +179,14 @@ func (m *manager) VerifyChecksum(filePath, expectedHash string) error {
 	return nil
 }
 
-// GetLatestReleaseURL returns the download URL for the latest release
+// GetLatestReleaseURL returns the download URL for the latest config release
 func (m *manager) GetLatestReleaseURL() string {
-	return DefaultReleaseURL
+	// Download config from the same release as the binary
+	// URL format: https://github.com/SamuelCastrillon/Jodify-Setup/releases/download/v0.1.0/jodify-config-v0.1.0.zip
+	ver := strings.TrimPrefix(version.Version, "v")
+	if ver == "" || ver == "0.0.0" {
+		// Development mode: use latest release
+		return "https://github.com/SamuelCastrillon/Jodify-Setup/releases/latest/download/jodify-config.zip"
+	}
+	return fmt.Sprintf("https://github.com/SamuelCastrillon/Jodify-Setup/releases/download/v%s/jodify-config-v%s.zip", ver, ver)
 }

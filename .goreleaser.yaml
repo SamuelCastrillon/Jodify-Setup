@@ -29,8 +29,16 @@ builds:
 
 # Archive configuration
 archives:
-  - id: default
+  # Binary archives (one per platform)
+  - id: binary
     format: zip
+    builds:
+      - jodify-setup
+
+  # Config archive (single, platform-independent)
+  - id: config
+    format: zip
+    name_template: "jodify-config-{{.Version}}"
     files:
       - src: config/
         dst: config/
@@ -52,7 +60,3 @@ changelog:
       - "^docs:"
       - "^test:"
       - "^chore:"
-
-# Snapshot configuration
-snapshot:
-  name_template: "{{ incpatch .Version }}-next"
