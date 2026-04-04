@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jodify/jodify-setup/internal/cli"
-	"github.com/jodify/jodify-setup/pkg/version"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/cli"
+	"github.com/SamuelCastrillon/Jodify-Setup/pkg/version"
 )
 
 func main() {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jodify/jodify-setup/internal/installer"
-	"github.com/jodify/jodify-setup/internal/platform"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/installer"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/platform"
 	"github.com/spf13/cobra"
 )
 

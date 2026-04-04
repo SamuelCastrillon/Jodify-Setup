@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/jodify/jodify-setup/pkg/version"
+	"github.com/SamuelCastrillon/Jodify-Setup/pkg/version"
 	"github.com/spf13/cobra"
 )
 

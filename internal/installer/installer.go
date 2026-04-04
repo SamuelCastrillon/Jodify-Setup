@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jodify/jodify-setup/internal/config"
-	"github.com/jodify/jodify-setup/internal/platform"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/config"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/platform"
 )
 
 // Installer orchestrates the setup process

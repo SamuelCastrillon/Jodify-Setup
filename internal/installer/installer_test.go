@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/jodify/jodify-setup/internal/platform"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/platform"
 )
 
 // mockConfigManager implements a minimal config manager for testing

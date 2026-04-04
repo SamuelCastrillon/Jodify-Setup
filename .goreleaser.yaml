@@ -53,8 +53,8 @@ archives:
 # Release configuration
 release:
   github:
-    owner: jodify
-    name: jodify-setup
+    owner: SamuelCastrillon
+    name: Jodify-Setup
   draft: false
   prerelease: auto
   name: "Jodify Setup {{.Tag}}"
