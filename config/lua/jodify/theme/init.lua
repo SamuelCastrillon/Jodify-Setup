@@ -4,6 +4,7 @@
 -- Check if tokyonight is available (installed by lazy.nvim)
 local tokyonight_ok, tokyonight = pcall(require, "tokyonight")
 if not tokyonight_ok then
+  vim.notify("tokyonight not installed yet", vim.log.levels.WARN)
   return
 end
 

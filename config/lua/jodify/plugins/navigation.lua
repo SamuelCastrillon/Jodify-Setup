@@ -5,7 +5,13 @@
 -- Neo-tree
 -- ============================================
 
-require("neo-tree").setup({
+local neotree_ok, neotree = pcall(require, "neo-tree")
+if not neotree_ok then
+  vim.notify("neo-tree not installed yet", vim.log.levels.WARN)
+  return
+end
+
+neotree.setup({
   sources = { "filesystem", "buffers", "git_status", "document_symbols" },
   open_files_behavior = "restore",
   close_if_last_window = true,
