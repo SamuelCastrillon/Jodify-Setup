@@ -63,10 +63,6 @@ require("lazy").setup({
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    config = function()
-      -- Config is in keymaps/
-      require("jodify.keymaps").setup_whichkey()
-    end,
   },
 
   -- Buffer tabs

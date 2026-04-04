@@ -121,7 +121,8 @@ keymap("n", "<leader>/", "gcc", { remap = true })
 keymap("v", "<leader>/", "gc", { remap = true })
 
 -- Smart splits (vim-beacon for jumping cursor)
-keymap("n", "<leader><leader>", require("smart-splits").start_beacon, opts)
+-- Note: smart-splits.nvim provides different API, using basic keymaps instead
+keymap("n", "<leader><leader>", "<cmd>WhichKey<CR>", opts)
 
 -- ============================================
 -- Which-key Setup
