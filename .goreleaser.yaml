@@ -41,8 +41,8 @@ archives:
     name_template: "jodify-config-{{.Version}}"
     meta: true
     files:
-      - src: config/
-        dst: config/
+      - source: config/
+        destination: ""
 
 # Release configuration
 release:
