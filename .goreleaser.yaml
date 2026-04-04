@@ -21,9 +21,9 @@ builds:
     # Build flags
     ldflags:
       - -s -w
-      - -X github.com/jodify/jodify-setup/pkg/version.Version={{.Version}}
-      - -X github.com/jodify/jodify-setup/pkg/version.Commit={{.Commit}}
-      - -X github.com/jodify/jodify-setup/pkg/version.Date={{.Date}}
+      - -X github.com/SamuelCastrillon/Jodify-Setup/pkg/version.Version={{.Version}}
+      - -X github.com/SamuelCastrillon/Jodify-Setup/pkg/version.Commit={{.Commit}}
+      - -X github.com/SamuelCastrillon/Jodify-Setup/pkg/version.Date={{.Date}}
     
     # Windows-specific settings
     windows:
