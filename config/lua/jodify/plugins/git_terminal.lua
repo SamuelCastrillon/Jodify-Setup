@@ -267,7 +267,7 @@ require("lualine").setup({
     lualine_c = {},
     lualine_x = {},
     lualine_y = {},
-    lualine_z = { require("tabtab").tabline_tabs },
+    lualine_z = {},
   },
   extensions = { "neo-tree", "toggleterm", "lazy" },
 })
@@ -276,63 +276,49 @@ require("lualine").setup({
 -- smart-splits.nvim
 -- ============================================
 
-require("smart-splits").setup({
-  -- directions = { h, j, k, l },
-  -- keys = h/j/k/l
-  -- delay before performing the swap
-  -- set to 0 to disable
-  move_delay = 150,
-  -- whether to resize the pane you're moving _to_
-  -- when using swap, as opposed to moving the current pane
-  resize_on_move = false,
-  -- a function to run before moving cursor to a pane
-  start_in_normal_mode = true,
-  -- ignore_buffer = <function>, function(bufnr) -> boolean
-  -- use this if you want to move over certain file types
-  -- returning true will cause smart-splits to ignore that buffer
-  -- ignore_buffer = function(bufnr)
-  --   local bufname = vim.api.nvim_buf_get_name(bufnr)
-  --   local ignored = { "NvimTree", "TelescopePrompt" }
-  --   for _, v in ipairs(ignored) do
-  --     if string.match(bufname, v) then
-  --       return true
-  --     end
-  --   end
-  -- end,
-})
+local smart_splits_ok, smart_splits = pcall(require, "smart-splits")
+if smart_splits_ok then
+  smart_splits.setup({
+    move_delay = 150,
+    resize_on_move = false,
+    start_in_normal_mode = true,
+  })
 
--- Smart splits keymaps
-keymap("n", "<C-h>", require("smart-splits").move_left, { desc = "Move to left pane" })
-keymap("n", "<C-j>", require("smart-splits").move_down, { desc = "Move to pane below" })
-keymap("n", "<C-k>", require("smart-splits").move_up, { desc = "Move to pane above" })
-keymap("n", "<C-l>", require("smart-splits").move_right, { desc = "Move to right pane" })
+  -- Smart splits keymaps
+  keymap("n", "<C-h>", smart_splits.move_left, { desc = "Move to left pane" })
+  keymap("n", "<C-j>", smart_splits.move_down, { desc = "Move to pane below" })
+  keymap("n", "<C-k>", smart_splits.move_up, { desc = "Move to pane above" })
+  keymap("n", "<C-l>", smart_splits.move_right, { desc = "Move to right pane" })
 
-keymap("n", "<leader><leader>h", require("smart-splits").swap_left, { desc = "Swap with left pane" })
-keymap("n", "<leader><leader>j", require("smart-splits").swap_down, { desc = "Swap with pane below" })
-keymap("n", "<leader><leader>k", require("smart-splits").swap_up, { desc = "Swap with pane above" })
-keymap("n", "<leader><leader>l", require("smart-splits").swap_right, { desc = "Swap with right pane" })
+  keymap("n", "<leader><leader>h", smart_splits.swap_left, { desc = "Swap with left pane" })
+  keymap("n", "<leader><leader>j", smart_splits.swap_down, { desc = "Swap with pane below" })
+  keymap("n", "<leader><leader>k", smart_splits.swap_up, { desc = "Swap with pane above" })
+  keymap("n", "<leader><leader>l", smart_splits.swap_right, { desc = "Swap with right pane" })
+end
 
 -- ============================================
 -- Comment.nvim
 -- ============================================
 
-require("Comment").setup({
-  toggler = {
-    line = "gcc",
-    block = "gbc",
-  },
-  opleader = {
-    line = "gc",
-    block = "gb",
-  },
-  extra = {
-    above = "gcO",
-    below = "gco",
-    eol = "gcA",
-  },
-  mappings = {
-    basic = true,
-    extra = true,
-  },
-  pre_hook = require("ts_context_commentstring").create_pre_hook(),
-})
+local comment_ok, comment = pcall(require, "Comment")
+if comment_ok then
+  comment.setup({
+    toggler = {
+      line = "gcc",
+      block = "gbc",
+    },
+    opleader = {
+      line = "gc",
+      block = "gb",
+    },
+    extra = {
+      above = "gcO",
+      below = "gco",
+      eol = "gcA",
+    },
+    mappings = {
+      basic = true,
+      extra = true,
+    },
+  })
+end
