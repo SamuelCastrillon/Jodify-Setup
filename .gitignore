@@ -29,6 +29,5 @@ serve_local.go
 
 # Agent skills (instaladas via skills.sh CLI, no versionadas)
 .agents/
-.trae/
 skills/
 skills-lock.json
