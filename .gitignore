@@ -27,7 +27,6 @@ jodify-setup-test.exe
 serve_local.exe
 serve_local.go
 
-# Agent skills (instaladas via skills.sh CLI, no versionadas)
-.agents/
-skills/
+# Skills from skills.sh CLI (not versioned, except .agents which IS versioned)
+/skills/
 skills-lock.json
