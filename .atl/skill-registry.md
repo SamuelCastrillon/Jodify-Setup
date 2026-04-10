@@ -9,12 +9,12 @@ These skills are installed locally in the project and versioned in git.
 | Trigger | Skill | Path |
 |---------|-------|------|
 | Writing Go tests, using teatest, or adding test coverage | go-testing | .agents/skills/golang-testing/SKILL.md |
-| Creating new AI skills, adding agent instructions, or documenting patterns for AI | skill-creator | .agents/skills/skill-creator/SKILL.md |
 
 ## Global Skills (Fallback - may not exist on all machines)
 
 | Trigger | Skill | Path |
 |---------|-------|------|
+| Creating new AI skills, adding agent instructions, or documenting patterns for AI | skill-creator | global → C:\Users\Admin\.config\opencode\skills\skill-creator\SKILL.md |
 | When user says "update skills", "skill registry", "actualizar skills", "update registry", or after installing/removing skills | skill-registry | global → C:\Users\Admin\.config\opencode\skills\skill-registry\SKILL.md |
 | Creating GitHub issues, reporting bugs, or requesting features | issue-creation | global → C:\Users\Admin\.config\opencode\skills\issue-creation\SKILL.md |
 | Creating pull requests, opening PRs, or preparing changes for review | branch-pr | global → C:\Users\Admin\.config\opencode\skills\branch-pr\SKILL.md |
@@ -50,4 +50,4 @@ These skills are used internally by the SDD orchestrator and should not be calle
 
 *Jodify-Setup Skill Registry*
 
-**Note:** Local skills (.agents/skills/) are versioned in git. Global skills are user-level installs that may not exist on all machines.
+**Note:** Local skills (.agents/skills/) are versioned in git. Global skills are user-level installs.
