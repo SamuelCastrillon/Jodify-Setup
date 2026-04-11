@@ -41,5 +41,5 @@
 
 ## Phase 6: Documentación (Opcional)
 
-- [ ] 6.1 Actualizar README.md con nuevas dependencias
-- [ ] 6.2 Agregar ejemplos de uso del flag --skip-deps
+- [x] 6.1 Actualizar README.md con nuevas dependencias y comandos dev
+- [x] 6.2 Agregar ejemplos de uso del flag --skip-deps

@@ -58,6 +58,10 @@ go build -o jodify-setup.exe ./cmd/jodify-setup
 |---------|-------------|
 | `jodify-setup` | Iniciar instalación interactiva |
 | `jodify-setup install` | Instalar Jodify |
+| `jodify-setup install --skip-deps` | Instalar sin dependencias del sistema |
+| `jodify-setup dev sync` | Sincronizar config local para desarrollo |
+| `jodify-setup dev open` | Abrir Neovim con config de desarrollo |
+| `jodify-setup dev clean` | Limpiar config de desarrollo |
 | `jodify-setup uninstall` | Desinstalar completamente |
 | `jodify-setup version` | Mostrar versión |
 | `jodify-setup update` | Actualizar Jodify |
@@ -81,21 +85,22 @@ Esto abre Neovim con configuración aislada (usando `NVIM_APPNAME=jodify`), sin 
 ```
 Jodify-Setup/
 ├── cmd/jodify-setup/     # Entry point
-├── internal/             # Lógica interna
+├── internal/
 │   ├── cli/              # Comandos Cobra
 │   ├── installer/        # Instalación y configuración
-│   ├── platform/         # Abstracción Windows/macOS
-│   └── config/           # Gestor de configuración
+│   ├── platform/        # Abstracción Windows/macOS
+│   ├── config/          # Gestor de configuración
+│   └── dependencies/    # Auto-install de dependencias
 ├── pkg/                  # Paquetes exportables
 ├── config/               # Configuración Lua de Neovim
-└── docs/                 # Documentación técnica
+└── openspec/             # SDD workflow
 ```
 
 ## Documentación
 
 - [PRD.md](./PRD.md) - Requisitos completos del producto
-- [docs/auto-install-scoop-design.md](./docs/auto-install-scoop-design.md) - Diseño técnico de auto-instalación de Scoop
-- [docs/judgment-prd.md](./docs/judgment-prd.md) - Documentación adicional
+- [openspec/](./openspec/) - SDD workflow y artefactos
+- [AGENTS.md](./AGENTS.md) - Convenciones para agentes de IA
 
 ## Licencia
 
