@@ -9,12 +9,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var openProfile string
+
 var devOpenCmd = &cobra.Command{
 	Use:   "open",
 	Short: "Open Neovim with Jodify config",
 	Long: `Open Neovim with the Jodify configuration.
 	
-Uses NVIM_APPNAME=jodify to isolate the config from your existing Neovim setup.`,
+Uses NVIM_APPNAME to isolate the config from your existing Neovim setup.
+By default, uses 'jodify' profile.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		p, err := platform.Detect()
 		if err != nil {
@@ -31,6 +34,11 @@ Uses NVIM_APPNAME=jodify to isolate the config from your existing Neovim setup.`
 			return fmt.Errorf("Neovim is not installed. Please install Neovim first")
 		}
 
+		// Set NVIM_APPNAME for config directory detection
+		if openProfile != "" {
+			os.Setenv("NVIM_APPNAME", openProfile)
+		}
+
 		// Get config directory
 		configDir, err := p.GetConfigDir()
 		if err != nil {
@@ -39,7 +47,7 @@ Uses NVIM_APPNAME=jodify to isolate the config from your existing Neovim setup.`
 
 		// Check if config exists
 		if _, err := os.Stat(configDir); os.IsNotExist(err) {
-			return fmt.Errorf("no config found at %s. Run 'jodify-setup sync' first", configDir)
+			return fmt.Errorf("no config found at %s. Run 'jodify-setup dev sync --profile %s' first", configDir, openProfile)
 		}
 
 		// Find Neovim executable
@@ -48,12 +56,17 @@ Uses NVIM_APPNAME=jodify to isolate the config from your existing Neovim setup.`
 			return fmt.Errorf("failed to find Neovim: %w", err)
 		}
 
+		profile := openProfile
+		if profile == "" {
+			profile = "jodify"
+		}
+
 		fmt.Printf("Opening Neovim with config at: %s\n", configDir)
-		fmt.Println("Tip: This uses NVIM_APPNAME=jodify for isolation")
+		fmt.Printf("Profile: %s\n", profile)
 
 		// Set NVIM_APPNAME and run Neovim
 		cmdEnv := os.Environ()
-		cmdEnv = append(cmdEnv, "NVIM_APPNAME=jodify")
+		cmdEnv = append(cmdEnv, fmt.Sprintf("NVIM_APPNAME=%s", profile))
 
 		nvimCmd := exec.Command(nvimPath)
 		nvimCmd.Env = cmdEnv
@@ -83,6 +96,7 @@ func findNeovim() (string, error) {
 	commonPaths := []string{
 		"C:\\Program Files\\Neovim\\bin\\nvim.exe",
 		"C:\\Program Files (x86)\\Neovim\\bin\\nvim.exe",
+		"C:\\Users\\ASUS\\scoop\\apps\\neovim\\current\\bin\\nvim.exe",
 	}
 
 	for _, p := range commonPaths {
@@ -95,5 +109,5 @@ func findNeovim() (string, error) {
 }
 
 func init() {
-	devOpenCmd.Flags().String("profile", "jodify", "Neovim profile to use")
+	devOpenCmd.Flags().StringVarP(&openProfile, "profile", "p", "jodify", "Neovim profile (NVIM_APPNAME)")
 }

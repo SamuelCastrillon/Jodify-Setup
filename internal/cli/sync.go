@@ -13,6 +13,7 @@ var (
 	syncDryRun    bool
 	syncBackup    bool
 	syncSourceDir string
+	syncProfile   string
 )
 
 var syncCmd = &cobra.Command{
@@ -23,15 +24,23 @@ var syncCmd = &cobra.Command{
 This command copies the local 'config/' directory to your Neovim config
 directory for local development and testing.
 
+By default, syncs to 'jodify' profile. Use --profile to sync to a different profile.
+
 Examples:
-  jodify-setup sync                    # Sync to default Neovim config dir
-  jodify-setup sync --dry-run         # Preview changes without copying
-  jodify-setup sync --backup          # Create backup before syncing
-  jodify-setup sync ./my-config       # Sync specific directory`,
+  jodify-setup dev sync                    # Sync to jodify profile
+  jodify-setup dev sync --profile nvim     # Sync to default nvim
+  jodify-setup dev sync --dry-run          # Preview without copying
+  jodify-setup dev sync --backup           # Backup before syncing`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		p, err := platform.Detect()
 		if err != nil {
 			return fmt.Errorf("failed to detect platform: %w", err)
+		}
+
+		// Set NVIM_APPNAME if profile is specified
+		if syncProfile != "" {
+			os.Setenv("NVIM_APPNAME", syncProfile)
+			fmt.Printf("Using profile: %s\n", syncProfile)
 		}
 
 		// Determine source directory
@@ -50,7 +59,7 @@ Examples:
 			return fmt.Errorf("source directory does not exist: %s", sourceDir)
 		}
 
-		// Get target Neovim config directory
+		// Get target Neovim config directory (uses NVIM_APPNAME env or default)
 		targetDir, err := p.GetConfigDir()
 		if err != nil {
 			return fmt.Errorf("failed to get config directory: %w", err)
@@ -90,7 +99,11 @@ Examples:
 		}
 
 		fmt.Println("Config synced successfully!")
-		fmt.Printf("\nTo test: NVIM_APPNAME=jodify nvim\n")
+		if syncProfile != "" {
+			fmt.Printf("\nTo test: NVIM_APPNAME=%s nvim\n", syncProfile)
+		} else {
+			fmt.Printf("\nTo test: NVIM_APPNAME=jodify nvim\n")
+		}
 
 		return nil
 	},
@@ -156,4 +169,5 @@ func init() {
 	syncCmd.Flags().BoolVar(&syncDryRun, "dry-run", false, "Preview changes without copying")
 	syncCmd.Flags().BoolVar(&syncBackup, "backup", false, "Create backup before syncing")
 	syncCmd.Flags().StringVar(&syncSourceDir, "source", "", "Source directory (default: ./config)")
+	syncCmd.Flags().StringVarP(&syncProfile, "profile", "p", "jodify", "Neovim profile (NVIM_APPNAME)")
 }

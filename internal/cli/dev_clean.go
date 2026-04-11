@@ -10,6 +10,7 @@ import (
 
 var (
 	cleanKeepBackup bool
+	cleanProfile    string
 )
 
 var devCleanCmd = &cobra.Command{
@@ -25,6 +26,11 @@ to preserve any existing backup.`,
 			return fmt.Errorf("failed to detect platform: %w", err)
 		}
 
+		// Set NVIM_APPNAME if profile is specified
+		if cleanProfile != "" {
+			os.Setenv("NVIM_APPNAME", cleanProfile)
+		}
+
 		configDir, err := p.GetConfigDir()
 		if err != nil {
 			return fmt.Errorf("failed to get config directory: %w", err)
@@ -37,7 +43,7 @@ to preserve any existing backup.`,
 		}
 
 		if !exists {
-			fmt.Println("No Jodify config found. Nothing to clean.")
+			fmt.Printf("No config found at %s. Nothing to clean.\n", configDir)
 			return nil
 		}
 
@@ -79,4 +85,5 @@ func configExists(path string) (bool, error) {
 
 func init() {
 	devCleanCmd.Flags().BoolVar(&cleanKeepBackup, "keep-backup", false, "Keep backup directory")
+	devCleanCmd.Flags().StringVarP(&cleanProfile, "profile", "p", "jodify", "Neovim profile (NVIM_APPNAME)")
 }
