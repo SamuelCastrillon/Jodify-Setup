@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/SamuelCastrillon/Jodify-Setup/internal/config"
+	"github.com/SamuelCastrillon/Jodify-Setup/internal/dependencies"
 	"github.com/SamuelCastrillon/Jodify-Setup/internal/platform"
 )
 
@@ -32,6 +34,7 @@ type InstallOptions struct {
 	Force      bool   // Overwrite existing config
 	ConfigURL  string // Custom config URL (optional)
 	SkipBackup bool   // Don't create backup
+	SkipDeps   bool   // Skip installing dependencies
 }
 
 // UpdateOptions contains options for update
@@ -75,6 +78,36 @@ func (i *installer) Install(ctx context.Context, opts InstallOptions) error {
 
 	if !result.GitInstalled {
 		return fmt.Errorf("%w: please install Git first (https://git-scm.com/)", platform.ErrGitNotFound)
+	}
+
+	// Install dependencies if not skipped
+	if !opts.SkipDeps {
+		var depsMgr dependencies.DependenciesManager
+		switch runtime.GOOS {
+		case "windows":
+			depsMgr = dependencies.NewWindowsDeps()
+		case "darwin":
+			depsMgr = dependencies.NewDarwinDeps()
+		default:
+			fmt.Printf("Warning: unsupported platform for dependencies: %s\n", runtime.GOOS)
+		}
+
+		if depsMgr != nil {
+			fmt.Println("Checking and installing required tools...")
+			depsResult, err := depsMgr.CheckAndInstall(ctx, dependencies.InstallOptions{
+				Verbose: true,
+			})
+			if err != nil {
+				fmt.Printf("Warning: dependency check failed: %v\n", err)
+			}
+
+			if len(depsResult.Installed) > 0 {
+				fmt.Printf("Installed tools: %v\n", depsResult.Installed)
+			}
+			if len(depsResult.Failed) > 0 {
+				fmt.Printf("Failed tools: %v\n", depsResult.Failed)
+			}
+		}
 	}
 
 	// Get config directory

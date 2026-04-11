@@ -13,6 +13,7 @@ var (
 	installForce     bool
 	installSkipBkp   bool
 	installConfigURL string
+	installSkipDeps  bool
 )
 
 var installCmd = &cobra.Command{
@@ -37,6 +38,7 @@ Use --force to overwrite existing configuration without prompting.`,
 			Force:      installForce,
 			ConfigURL:  installConfigURL,
 			SkipBackup: installSkipBkp,
+			SkipDeps:   installSkipDeps,
 		}
 
 		inst := installer.New(p)
@@ -53,4 +55,5 @@ func init() {
 	installCmd.Flags().BoolVarP(&installForce, "force", "f", false, "Overwrite existing configuration")
 	installCmd.Flags().BoolVar(&installSkipBkp, "skip-backup", false, "Skip creating backup of existing configuration")
 	installCmd.Flags().StringVar(&installConfigURL, "config-url", "", "Custom configuration URL (optional)")
+	installCmd.Flags().BoolVar(&installSkipDeps, "skip-deps", false, "Skip installing required tools (gcc, ripgrep, fd, fzf, zoxide, lazygit)")
 }
