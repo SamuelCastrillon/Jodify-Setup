@@ -102,7 +102,6 @@ require("lazy").setup({
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
-    build = ":MasonUpdate",
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
       "neovim/nvim-lspconfig",
@@ -181,7 +180,6 @@ require("lazy").setup({
   {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
-    build = ":ToggleTermToggleAll",
   },
 
   -- Smart splits
