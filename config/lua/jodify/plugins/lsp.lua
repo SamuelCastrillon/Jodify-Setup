@@ -246,7 +246,8 @@ for server, config in pairs(servers) do
 end
 
 -- Enable LSP capabilities for all configured servers
-vim.lsp.enable() -- vim LSP servers will be started automatically based on filetype
+-- vim.lsp.enable() is called automatically when servers are configured via vim.lsp.config()
+-- No manual call needed - servers start based on filetype
 
 -- LSP keymaps (already in keymaps/init.lua, but adding here for reference)
 -- gd - go to definition
