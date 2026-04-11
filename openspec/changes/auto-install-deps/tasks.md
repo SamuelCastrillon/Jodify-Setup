@@ -31,13 +31,13 @@
 
 ## Phase 5: Testing
 
-- [ ] 5.1 Crear `internal/dependencies/manager_test.go` con tests unitarios
-- [ ] 5.2 Test: `IsInstalled()` retorna true cuando tool existe
-- [ ] 5.3 Test: `IsInstalled()` retorna false cuando tool no existe
-- [ ] 5.4 Test: `CheckAndInstall()` instala tools faltantes
-- [ ] 5.5 Test: `CheckAndInstall()` omite tools ya instaladas
-- [ ] 5.6 Test: Fallback cuando package manager no disponible
-- [ ] 5.7 Test: Verificar output con InstallResult
+- [x] 5.1 Crear `internal/dependencies/manager_test.go` con tests unitarios
+- [x] 5.2 Test: `IsInstalled()` retorna true cuando tool existe
+- [x] 5.3 Test: `IsInstalled()` retorna false cuando tool no existe
+- [x] 5.4 Test: `CheckAndInstall()` instala tools faltantes
+- [x] 5.5 Test: `CheckAndInstall()` omite tools ya instaladas
+- [x] 5.6 Test: Fallback cuando package manager no disponible
+- [x] 5.7 Test: Verificar output con InstallResult
 
 ## Phase 6: Documentación (Opcional)
 
