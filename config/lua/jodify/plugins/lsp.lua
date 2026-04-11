@@ -96,7 +96,7 @@ require("mason-lspconfig").setup({
   ensure_installed = {
     "lua_ls",
     "pyright",
-    "typescript-language-server",
+    "ts_ls",
     "gopls",
     "rust_analyzer",
     "clangd",
@@ -144,9 +144,7 @@ vim.diagnostic.config({
   },
 })
 
--- LSP server configurations
-local lspconfig = require("lspconfig")
-
+-- LSP server configurations (using vim.lsp.config - nvim 0.11+ API)
 local servers = {
   lua_ls = {
     settings = {
@@ -186,7 +184,7 @@ local servers = {
       },
     },
   },
-  tsserver = {
+  ts_ls = {
     settings = {
       typescript = {
         inlayHints = {
@@ -242,13 +240,13 @@ local servers = {
   },
 }
 
--- Setup LSP servers
+-- Setup LSP servers using vim.lsp.config (nvim 0.11+ API)
 for server, config in pairs(servers) do
-  local opts = vim.tbl_deep_extend("force", {
-    capabilities = require("cmp_nvim_lsp").default_capabilities(),
-  }, config)
-  lspconfig[server].setup(opts)
+  vim.lsp.config(server, config)
 end
+
+-- Enable LSP capabilities for all configured servers
+vim.lsp.enable(--vim LSP servers will be started automatically based on filetype)
 
 -- LSP keymaps (already in keymaps/init.lua, but adding here for reference)
 -- gd - go to definition
