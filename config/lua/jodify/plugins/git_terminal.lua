@@ -277,18 +277,26 @@ require("lualine").setup({
 -- ============================================
 
 local smart_splits_ok, smart_splits = pcall(require, "smart-splits")
-if smart_splits_ok then
+if smart_splits_ok and smart_splits then
   smart_splits.setup({
     move_delay = 150,
     resize_on_move = false,
     start_in_normal_mode = true,
   })
 
-  -- Smart splits keymaps
-  keymap("n", "<C-h>", smart_splits.move_left, { desc = "Move to left pane" })
-  keymap("n", "<C-j>", smart_splits.move_down, { desc = "Move to pane below" })
-  keymap("n", "<C-k>", smart_splits.move_up, { desc = "Move to pane above" })
-  keymap("n", "<C-l>", smart_splits.move_right, { desc = "Move to right pane" })
+  -- Smart splits keymaps (with nil checks)
+  if smart_splits.move_left then
+    keymap("n", "<C-h>", smart_splits.move_left, { desc = "Move to left pane" })
+  end
+  if smart_splits.move_down then
+    keymap("n", "<C-j>", smart_splits.move_down, { desc = "Move to pane below" })
+  end
+  if smart_splits.move_up then
+    keymap("n", "<C-k>", smart_splits.move_up, { desc = "Move to pane above" })
+  end
+  if smart_splits.move_right then
+    keymap("n", "<C-l>", smart_splits.move_right, { desc = "Move to right pane" })
+  end
 
   keymap("n", "<leader><leader>h", smart_splits.swap_left, { desc = "Swap with left pane" })
   keymap("n", "<leader><leader>j", smart_splits.swap_down, { desc = "Swap with pane below" })
