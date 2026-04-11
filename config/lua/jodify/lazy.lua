@@ -7,8 +7,9 @@
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Check if lazy.nvim is not installed
-if not vim.loop.fs_stat(lazypath) then
+-- Check if lazy.nvim is not installed (compatible with Neovim 0.11+)
+local lazy_path_exists = (vim.uv or vim.loop).fs_stat(lazypath)
+if not lazy_path_exists then
   -- Clone lazy.nvim
   vim.fn.system({
     "git",
