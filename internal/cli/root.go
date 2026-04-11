@@ -48,9 +48,6 @@ func init() {
 	// Add uninstall command
 	RootCmd.AddCommand(uninstallCmd)
 
-	// Add sync command (for development)
-	RootCmd.AddCommand(syncCmd)
-
 	// Set output to stdout
 	RootCmd.SetOutput(os.Stdout)
 }
