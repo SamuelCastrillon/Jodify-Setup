@@ -46,39 +46,57 @@ require("gitsigns").setup({
     local gs = package.loaded.gitsigns
 
     local function map(mode, l, r, desc)
-      vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+      if r then
+        vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+      end
     end
 
-    -- Navigation
-    map("n", "]c", function()
-      if vim.wo.diff then return "]c" end
-      vim.schedule(function() gs.next_hunk() end)
-      return "<Ignore>"
-    end, { expr = true, desc = "Next hunk" })
+    -- Navigation (solo si las funciones existen)
+    if gs.next_hunk then
+      map("n", "]c", function()
+        if vim.wo.diff then return "]c" end
+        vim.schedule(function() gs.next_hunk() end)
+        return "<Ignore>"
+      end, "Next hunk")
+    end
 
-    map("n", "[c", function()
-      if vim.wo.diff then return "[c" end
-      vim.schedule(function() gs.prev_hunk() end)
-      return "<Ignore>"
-    end, { expr = true, desc = "Prev hunk" })
+    if gs.prev_hunk then
+      map("n", "[c", function()
+        if vim.wo.diff then return "[c" end
+        vim.schedule(function() gs.prev_hunk() end)
+        return "<Ignore>"
+      end, "Prev hunk")
+    end
 
-    -- Actions
-    map("n", "<leader>gs", gs.stage_hunk, "Stage hunk")
-    map("n", "<leader>gu", gs.undo_stage_hunk, "Undo stage hunk")
-    map("n", "<leader>gr", gs.reset_hunk, "Reset hunk")
-    map("v", "<leader>gs", function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end, "Stage hunk")
-    map("v", "<leader>gr", function() gs.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end, "Reset hunk")
-
-    map("n", "<leader>gS", gs.stage_buffer, "Stage buffer")
-    map("n", "<leader>gR", gs.reset_buffer, "Reset buffer")
-
-    map("n", "<leader>gp", gs.preview_hunk, "Preview hunk")
-    map("n", "<leader>gb", gs.blame_line, "Blame line")
-
-    map("n", "<leader>gd", gs.diffthis, "Diff this")
-    map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff this ~")
-
-    map("n", "<leader>td", gs.toggle_deleted, "Toggle deleted")
+    -- Actions (solo si existen)
+    if gs.stage_hunk then
+      map("n", "<leader>gs", gs.stage_hunk, "Stage hunk")
+    end
+    if gs.undo_stage_hunk then
+      map("n", "<leader>gu", gs.undo_stage_hunk, "Undo stage hunk")
+    end
+    if gs.reset_hunk then
+      map("n", "<leader>gr", gs.reset_hunk, "Reset hunk")
+    end
+    if gs.stage_buffer then
+      map("n", "<leader>gS", gs.stage_buffer, "Stage buffer")
+    end
+    if gs.reset_buffer then
+      map("n", "<leader>gR", gs.reset_buffer, "Reset buffer")
+    end
+    if gs.preview_hunk then
+      map("n", "<leader>gp", gs.preview_hunk, "Preview hunk")
+    end
+    if gs.blame_line then
+      map("n", "<leader>gb", gs.blame_line, "Blame line")
+    end
+    if gs.diffthis then
+      map("n", "<leader>gd", gs.diffthis, "Diff this")
+      map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff this ~")
+    end
+    if gs.toggle_deleted then
+      map("n", "<leader>td", gs.toggle_deleted, "Toggle deleted")
+    end
   end,
 })
 
