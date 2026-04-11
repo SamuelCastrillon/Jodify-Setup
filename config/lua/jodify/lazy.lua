@@ -184,6 +184,19 @@ require("lazy").setup({
     dependencies = "nvim-lua/plenary.nvim",
   },
 
+  -- Git fugitive (comandos git en nvim)
+  {
+    "tpope/vim-fugitive",
+    cmd = { "Git", "G", "Gdiffsplit", "GEdit", "Gwrite" },
+  },
+
+  -- Diffview (diffs visuales)
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+    dependencies = "nvim-lua/plenary.nvim",
+  },
+
   -- Terminal
   {
     "akinsho/toggleterm.nvim",

@@ -93,6 +93,17 @@ keymap("n", "<leader>gb", ":Gitsigns blame_line<CR>", opts)
 keymap("n", "<leader>gd", ":Gitsigns diffthis<CR>", opts)
 keymap("n", "<leader>gD", ":Gitsigns diffthis ~<CR>", opts)
 
+-- Fugitive (comandos git)
+keymap("n", "<leader>gg", ":Git<CR>", opts)
+keymap("n", "<leader>gco", ":Git co<CR>", opts)
+keymap("n", "<leader>gci", ":Git ci?<CR>", opts)
+keymap("n", "<leader>gbl", ":Git blame<CR>", opts)
+
+-- Diffview (diffs visuales)
+keymap("n", "<leader>gvo", ":DiffviewOpen<CR>", opts)
+keymap("n", "<leader>gvc", ":DiffviewClose<CR>", opts)
+keymap("n", "<leader>gvh", ":DiffviewFileHistory<CR>", opts)
+
 -- ToggleTerm
 keymap("n", "<leader>tt", ":ToggleTerm<CR>", opts)
 keymap("n", "<leader>tf", ":ToggleTerm direction=float<CR>", opts)
