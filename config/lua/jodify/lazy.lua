@@ -91,10 +91,18 @@ require("lazy").setup({
   -- Inteligencia de Código, LSP y Edición
   -- ========================================
 
-  -- Treesitter - syntax highlighting
+  -- Treesitter - syntax highlighting (rama main)
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+  },
+
+  -- Treesitter textobjects (rama main)
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     event = { "BufReadPost", "BufNewFile" },
   },
 
