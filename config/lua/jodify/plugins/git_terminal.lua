@@ -298,10 +298,19 @@ if smart_splits_ok and smart_splits then
     keymap("n", "<C-l>", smart_splits.move_right, { desc = "Move to right pane" })
   end
 
-  keymap("n", "<leader><leader>h", smart_splits.swap_left, { desc = "Swap with left pane" })
-  keymap("n", "<leader><leader>j", smart_splits.swap_down, { desc = "Swap with pane below" })
-  keymap("n", "<leader><leader>k", smart_splits.swap_up, { desc = "Swap with pane above" })
-  keymap("n", "<leader><leader>l", smart_splits.swap_right, { desc = "Swap with right pane" })
+  -- Swap keymaps with nil checks
+  if smart_splits.swap_left then
+    keymap("n", "<leader><leader>h", smart_splits.swap_left, { desc = "Swap with left pane" })
+  end
+  if smart_splits.swap_down then
+    keymap("n", "<leader><leader>j", smart_splits.swap_down, { desc = "Swap with pane below" })
+  end
+  if smart_splits.swap_up then
+    keymap("n", "<leader><leader>k", smart_splits.swap_up, { desc = "Swap with pane above" })
+  end
+  if smart_splits.swap_right then
+    keymap("n", "<leader><leader>l", smart_splits.swap_right, { desc = "Swap with right pane" })
+  end
 end
 
 -- ============================================
